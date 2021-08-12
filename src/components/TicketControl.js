@@ -21,7 +21,7 @@ class TicketControl extends React.Component {
         formVisibleOnPage: false,
         selectedTicket: null
       });
-    }else {
+    } else {
       this.setState(prevState => ({
         formVisibleOnPage: !prevState.formVisibleOnPage
       }));
@@ -39,6 +39,14 @@ class TicketControl extends React.Component {
   handleChangingSelectedTicket = (id) => {
     const selectedTicket = this.state.masterTicketList.filter(ticket => ticket.id === id)[0];
     this.setState({ selectedTicket: selectedTicket });
+  }
+
+  handleDeletingTicket = (id) => {
+    const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
+    this.setState({
+      masterTicketList: newMasterTicketList,
+      selectedTicket: null
+    });
   }
 
   render() {
