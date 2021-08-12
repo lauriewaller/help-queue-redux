@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 function TicketDetail(props){
   const { ticket } = props;
+
   return (
     <React.Fragment>
       <h1>Ticket Detail</h1>
