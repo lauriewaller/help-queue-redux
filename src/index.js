@@ -3,12 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import { createStore } from 'redux'; //The entry point file is where Webpack accesses the top level component in our application. Since we want the store to be available everywhere we need it, it needs to be in index.js.
+import reducer from './reducers/ticket-list-reducer';
+const store = createStore(reducer); //instantiate the store
+import { Provider } from 'react-redux';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App /> 
-  </React.StrictMode>,
-  document.getElementById('root') 
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
 );
 
 
