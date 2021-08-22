@@ -4,6 +4,8 @@ import TicketList from './TicketList';
 import TicketDetail from './TicketDetail';
 import EditTicketForm from './EditTicketForm';
 import { connect } from 'react-redux';
+import PropTypes from "prop-types";
+
 
 class TicketControl extends React.Component {
 
@@ -75,16 +77,10 @@ handleDeletingTicket = (id) => {
     console.log("handleEditClick reached!");
     this.setState({editing:true});
   }
-//EDIT: this is passed to EditTicketForm. It filters out the current ticket being edited, then concats the updated ticket. It then updates state. 
-  handleEditingTicketInList = (ticketToEdit) => {
-    const editedMasterTicketList = this.state.masterTicketList
-      .filter(ticket => ticket.id !== this.state.selectedTicket.id)
-      .concat(ticketToEdit);
-    this.setState({
-        masterTicketList: editedMasterTicketList,
-        editing: false,
-        selectedTicket: null
-    });
+
+  handleChangingSelectedTicket = (id) => {
+    const selectedTicket = this.props.masterTicketList[id];
+    this.setState({selectedTicket: selectedTicket});
   }
 
   render() {
@@ -104,7 +100,7 @@ handleDeletingTicket = (id) => {
       currentlyVisibleState = <NewTicketForm onNewTicketCreation={this.handleAddingNewTicketToList} />;
       buttonText = "Return to Ticket List";
     } else {
-      currentlyVisibleState = <TicketList ticketList={this.state.masterTicketList} onTicketSelection={this.handleChangingSelectedTicket} />;
+      currentlyVisibleState = <TicketList ticketList={this.props.masterTicketList} onTicketSelection={this.handleChangingSelectedTicket} />;
       // Because a user will actually be clicking on the ticket in the Ticket component, we will need to pass our new handleChangingSelectedTicket method as a prop.
       buttonText = "Add Ticket";
     }
@@ -116,6 +112,10 @@ handleDeletingTicket = (id) => {
     );
   }
 }
+
+TicketControl.propTypes = {
+  masterTicketList: PropTypes.object
+};
 
 const mapStateToProps = state => {
   return {
