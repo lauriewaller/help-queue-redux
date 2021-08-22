@@ -16,7 +16,7 @@ class TicketControl extends React.Component {
       editing: false
     };
   }
-
+//handles actions to be completed when button is clicked. If there is a selected ticket, do not show form, set ticket to null, do not show editing form. Else, toggle form. 
   handleClick = () => {
     if (this.state.selectedTicket != null) {
       this.setState({
@@ -30,7 +30,7 @@ class TicketControl extends React.Component {
       }));
     }
   }
-
+//CREATE: creates new ticket when submit button is clicked on in NewTicketForm. Triggered within handleFormSubmission function, where the inputs from form are passed into the function. changes form to false  
   handleAddingNewTicketToList = (newTicket) => {
     const newMasterTicketList = this.state.masterTicketList.concat(newTicket);
     this.setState({
@@ -38,12 +38,12 @@ class TicketControl extends React.Component {
       formVisibleOnPage: false
     });
   }
-
+//DETAIL:this is passed down to TicketList, then Ticket, and thus is an example of prop drilling.
   handleChangingSelectedTicket = (id) => {
     const selectedTicket = this.state.masterTicketList.filter(ticket => ticket.id === id)[0];
     this.setState({ selectedTicket: selectedTicket });
   }
-
+//DELETE: this is passed to TicketDetail, where it is attached to the delete button 
   handleDeletingTicket = (id) => {
     const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
     this.setState({
@@ -51,12 +51,12 @@ class TicketControl extends React.Component {
       selectedTicket: null
     });
   }
-
+//Handle Edit Button: this is passed to TicketDetail, where it is attached to the edit button 
   handleEditClick = () => {
     console.log("handleEditClick reached!");
     this.setState({editing:true});
   }
-
+//EDIT: this is passed to EditTicketForm. It filters out the current ticket being edited, then concats the updated ticket. It then updates state. 
   handleEditingTicketInList = (ticketToEdit) => {
     const editedMasterTicketList = this.state.masterTicketList
       .filter(ticket => ticket.id !== this.state.selectedTicket.id)
@@ -92,7 +92,7 @@ class TicketControl extends React.Component {
     return (
       <React.Fragment>
         {currentlyVisibleState}
-        <button onClick={this.handleClick}>{buttonText}</button> { /* new code */}
+        <button onClick={this.handleClick}>{buttonText}</button> 
       </React.Fragment>
     );
   }
