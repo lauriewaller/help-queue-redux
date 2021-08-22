@@ -30,26 +30,46 @@ class TicketControl extends React.Component {
     }
   }
 //CREATE: creates new ticket when submit button is clicked on in NewTicketForm. Triggered within handleFormSubmission function, where the inputs from form are passed into the function. changes form to false  
-  handleAddingNewTicketToList = (newTicket) => {
-    const newMasterTicketList = this.state.masterTicketList.concat(newTicket);
-    this.setState({
-      masterTicketList: newMasterTicketList,
-      formVisibleOnPage: false
-    });
+handleAddingNewTicketToList = (newTicket) => {
+  const { dispatch } = this.props;
+  const { id, names, location, issue } = newTicket;
+  const action = {
+    type: 'ADD_TICKET',
+    id: id,
+    names: names,
+    location: location,
+    issue: issue,
   }
+  dispatch(action);
+  this.setState({formVisibleOnPage: false});
+}
 //DETAIL:this is passed down to TicketList, then Ticket, and thus is an example of prop drilling.
-  handleChangingSelectedTicket = (id) => {
-    const selectedTicket = this.state.masterTicketList.filter(ticket => ticket.id === id)[0];
-    this.setState({ selectedTicket: selectedTicket });
+handleEditingTicketInList = (ticketToEdit) => {
+  const { dispatch } = this.props;
+  const { id, names, location, issue } = ticketToEdit;
+  const action = {
+    type: 'ADD_TICKET',
+    id: id,
+    names: names,
+    location: location,
+    issue: issue,
   }
+  dispatch(action);
+  this.setState({
+    editing: false,
+    selectedTicket: null
+  });
+}
 //DELETE: this is passed to TicketDetail, where it is attached to the delete button 
-  handleDeletingTicket = (id) => {
-    const newMasterTicketList = this.state.masterTicketList.filter(ticket => ticket.id !== id);
-    this.setState({
-      masterTicketList: newMasterTicketList,
-      selectedTicket: null
-    });
+handleDeletingTicket = (id) => {
+  const { dispatch } = this.props;
+  const action = {
+    type: 'DELETE_TICKET',
+    id: id
   }
+  dispatch(action);
+  this.setState({selectedTicket: null});
+}
 //Handle Edit Button: this is passed to TicketDetail, where it is attached to the edit button 
   handleEditClick = () => {
     console.log("handleEditClick reached!");
@@ -97,7 +117,15 @@ class TicketControl extends React.Component {
   }
 }
 
-TicketControl = connect()(TicketControl);
+const mapStateToProps = state => {
+  return {
+    masterTicketList: state
+  }
+}
+
+// Note: we are now passing mapStateToProps into the connect() function.
+
+TicketControl = connect(mapStateToProps)(TicketControl);
 
 export default TicketControl;
 
